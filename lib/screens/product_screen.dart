@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
+import 'cart_screen.dart';
+
 import '../providers/products_provider.dart';
 import '../providers/cart.dart';
+
 import '../widgets/product_design.dart';
+import '../widgets/app_drawer.dart';
 
 enum PopupListOptions {
   all,
@@ -32,12 +36,17 @@ class _ProductOverviewState extends State<ProductOverview> {
         filter = PopupListOptions.favourites;
       });
     } else if (choice == PopupListOptions.cart) {
-      // goToCart
+      goToCart();
     } else {
       setState(() {
         filter = PopupListOptions.all;
       });
     }
+  }
+
+  void goToCart() {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    Navigator.of(context).pushNamed(CartScreen.routeName);
   }
 
   @override
@@ -61,6 +70,7 @@ class _ProductOverviewState extends State<ProductOverview> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: Row(
           children: [
@@ -71,7 +81,7 @@ class _ProductOverviewState extends State<ProductOverview> {
             const Spacer(),
             Consumer<Cart>(
               child: GestureDetector(
-                onTap: null,
+                onTap: goToCart,
                 child: const Icon(
                   Icons.shopping_cart,
                   size: 30,
@@ -79,8 +89,7 @@ class _ProductOverviewState extends State<ProductOverview> {
               ),
               builder: (_, cartData, child) => Badge(
                 badgeStyle: const BadgeStyle(
-                  shape: BadgeShape.circle,
-                  badgeColor: Colors.green,
+                  badgeColor: Colors.green
                 ),
                 badgeContent:
                     FittedBox(child: Text(cartData.totalItems.toString())),
@@ -102,7 +111,6 @@ class _ProductOverviewState extends State<ProductOverview> {
               builder: (_, prod, child) => Badge(
                 badgeAnimation: const BadgeAnimation.scale(),
                 badgeStyle: const BadgeStyle(
-                  shape: BadgeShape.circle,
                   badgeColor: Colors.green,
                 ),
                 badgeContent: Text(prod.totalFav.toString()),
@@ -149,8 +157,7 @@ class MainProductList extends StatelessWidget {
   const MainProductList({Key? key, required this.filter}) : super(key: key);
 
   Future<void> _fetchProducts(BuildContext context) async {
-    await Provider.of<ProductProvider>(context, listen: false)
-        .fetchProducts(false);
+    await Provider.of<ProductProvider>(context, listen: false).fetchProducts(false);
   }
 
   @override
