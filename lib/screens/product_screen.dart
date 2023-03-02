@@ -87,15 +87,7 @@ class _ProductOverviewState extends State<ProductOverview> {
                   size: 30,
                 ),
               ),
-              builder: (_, cartData, child) => Badge(
-                badgeStyle: const BadgeStyle(
-                  badgeColor: Colors.green
-                ),
-                badgeContent:
-                    FittedBox(child: Text(cartData.totalItems.toString())),
-                badgeAnimation: const BadgeAnimation.scale(),
-                child: child,
-              ),
+              builder: (_, cartData, child) => SizedBox()
             ),
             SizedBox(
               width: width * 0.05,
@@ -108,14 +100,7 @@ class _ProductOverviewState extends State<ProductOverview> {
                   size: 30,
                 ),
               ),
-              builder: (_, prod, child) => Badge(
-                badgeAnimation: const BadgeAnimation.scale(),
-                badgeStyle: const BadgeStyle(
-                  badgeColor: Colors.green,
-                ),
-                badgeContent: Text(prod.totalFav.toString()),
-                child: child,
-              ),
+              builder: (_, prod, child) => SizedBox()
             ),
           ],
         ),

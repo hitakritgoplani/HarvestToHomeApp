@@ -64,7 +64,19 @@ class _AuthScreenState extends State<AuthScreen>
                   CustomPaint(
                     painter: CurvePainter(height: height, width: width),
                   ),
+
                 ],
+              ),
+              SizedBox(
+                height: height * 0.3,
+                width: width * 5,
+                child: const Image(
+                  image: AssetImage('images/logo.png'),
+                  alignment:Alignment.center,
+                  width: 329,
+                  height: 88,
+                  // fit: BoxFit.cover,
+                ),
               ),
               const Align(
                 alignment: Alignment.bottomCenter,
@@ -235,21 +247,22 @@ class _LoginWidgetState extends State<LoginWidget>
         child: Column(
           children: [
             SizedBox(height: height * 0.01),
-            CircleAvatar(
-              backgroundColor: Colors.black12,
-              radius: width * 0.15,
-              child: const Icon(
-                Icons.shopping_cart_outlined,
-                size: 80,
-              ),
+            Text(
+              "Welcome Back",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  fontSize: 24,
+                    color:Colors.black,
+                  fontWeight:FontWeight.bold,
+                )
             ),
             SizedBox(height: height * 0.02),
             TextFormField(
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
               controller: _usernameController,
-              cursorColor: Colors.white,
+              cursorColor: Colors.black,
               decoration: inputDecoration('Username / Email'),
               textInputAction: TextInputAction.next,
               validator: (value) {
@@ -265,7 +278,7 @@ class _LoginWidgetState extends State<LoginWidget>
             SizedBox(height: height * 0.02),
             TextFormField(
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
               controller: _passwordController,
               cursorColor: Colors.white,
@@ -350,12 +363,12 @@ class _LoginWidgetState extends State<LoginWidget>
               },
               child: Text(
                 _authMode == AuthMode.login
-                    ? 'New User? Sign In'
+                    ? 'New User? Sign up'
                     : 'Already a user? Login',
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
             ),
           ],
