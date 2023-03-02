@@ -248,7 +248,7 @@ class _LoginWidgetState extends State<LoginWidget>
           children: [
             SizedBox(height: height * 0.01),
             Text(
-              "Welcome Back",
+              _authMode==AuthMode.login?"Welcome Back":"Create your account",
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   fontSize: 24,
@@ -377,10 +377,6 @@ class _LoginWidgetState extends State<LoginWidget>
     );
   }
 }
-
-
-
-
 
 class CurvePainter extends CustomPainter {
 
