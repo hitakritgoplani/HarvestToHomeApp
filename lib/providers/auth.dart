@@ -12,7 +12,7 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String? _userID;
 
-  static const apiKey = 'AIzaSyBETsEkGK6fKe-EVqY-sF3dvdtbCymEZec';
+  static const apiKey = 'AIzaSyDmCBzUXgbBiJZGI-aLBKdEynLrzQ4Xo6Y';
 
   String? get token {
     if(_token != null && _expiryDate != null && _expiryDate!.isAfter(DateTime.now()) && _token != ''){

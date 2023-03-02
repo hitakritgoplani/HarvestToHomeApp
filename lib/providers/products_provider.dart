@@ -37,10 +37,10 @@ class ProductProvider with ChangeNotifier {
   Future<void> fetchProducts([bool loadEditable = true]) async {
     final editableUrl = '&orderBy="creatorID"&equalTo="$_userID"';
     final getAllUrl =
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/product.json?auth=$_token';
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product.json?auth=$_token';
     final url = Uri.parse(getAllUrl + (loadEditable ? editableUrl : ''));
     final favUrl = Uri.parse(
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/UserFavorites/$_userID.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/UserFavorites/$_userID.json?auth=$_token');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -70,7 +70,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/product.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product.json?auth=$_token');
     try {
       await http.post(
         url,
@@ -92,7 +92,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> updateProduct(Product product) async {
     final url = Uri.parse(
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/product/${product.id}.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product/${product.id}.json?auth=$_token');
     final index = _items.indexWhere((element) => element.id == product.id);
     try {
       await http.patch(
@@ -114,7 +114,7 @@ class ProductProvider with ChangeNotifier {
   //Optimistic Updating
   Future<void> removeItem(String id) async {
     final url = Uri.parse(
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/product/$id.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product/$id.json?auth=$_token');
     final index = _items.indexWhere((element) => element.id == id);
     Product? deletedItem = _items[index];
     _items.removeWhere((element) => element.id == id);
