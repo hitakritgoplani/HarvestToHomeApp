@@ -42,6 +42,7 @@ dependencies:
   intl:
   shared_preferences:
   linkcheck:
+  badges:
 
 
 dev_dependencies:
