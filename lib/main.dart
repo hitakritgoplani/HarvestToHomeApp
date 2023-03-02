@@ -34,9 +34,7 @@ class MyApp extends StatelessWidget {
               color: Colors.teal,
               titleTextStyle: TextStyle(
                 fontSize: 30,
-                //fontFamily: 'Cag',
                 fontWeight: FontWeight.bold,
-                //color: Colors.white,
               ),
             ),
             textTheme: const TextTheme(
@@ -54,12 +52,14 @@ class MyApp extends StatelessWidget {
           home: authData.isAuth
               ? const ProductOverview()
               : FutureBuilder(
-            future: authData.tryAutoLogin(),
-            builder: (ctx, authDataSS) =>
-            authDataSS.connectionState == ConnectionState.waiting
-                ? const Center(child: CircularProgressIndicator(),)
-                : const AuthScreen(),
-          ),
+                  future: authData.tryAutoLogin(),
+                  builder: (ctx, authDataSS) =>
+                      authDataSS.connectionState == ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : const AuthScreen(),
+                ),
           routes: {
             AuthScreen.routeName: (ctx) => const AuthScreen(),
             ProductOverview.routeName: (ctx) => const ProductOverview(),
