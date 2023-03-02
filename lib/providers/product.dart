@@ -21,7 +21,7 @@ class Product with ChangeNotifier {
 
   Future<void> toggleFavorite(String token, String userID) async {
     final url = Uri.parse(
-        'https://shopapp4-91270-default-rtdb.firebaseio.com/UserFavorites/$userID/$id.json?auth=$token');
+        'https://harvesttohome-f0370-default-rtdb.firebaseio.com/UserFavorites/$userID/$id.json?auth=$token');
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();

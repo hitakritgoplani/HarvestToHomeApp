@@ -31,7 +31,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchOrderItems() async {
     final url =
-        Uri.parse('https://shopapp4-91270-default-rtdb.firebaseio.com/orders/$userID.json?auth=$token');
+        Uri.parse('https://harvesttohome-f0370-default-rtdb.firebaseio.com/orders/$userID.json?auth=$token');
     final response = await http.get(url);
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     final List<OrderItem> loadedItems = [];
@@ -60,7 +60,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartItems, int total) async {
     final url =
-        Uri.parse('https://shopapp4-91270-default-rtdb.firebaseio.com/orders/$userID.json?auth=$token');
+        Uri.parse('https://harvesttohome-f0370-default-rtdb.firebaseio.com/orders/$userID.json?auth=$token');
     if (cartItems.isNotEmpty) {
       try {
         await http.post(
