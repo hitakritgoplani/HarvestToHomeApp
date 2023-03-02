@@ -43,6 +43,7 @@ dependencies:
   shared_preferences:
   linkcheck:
   badges:
+  animated_text_kit:
 
 
 dev_dependencies:
@@ -69,9 +70,6 @@ flutter:
   assets:
     - images/logo.png
     - images/logo1.png
-
-  # To add assets to your application, add an assets section, like this:
-  assets:
     - images/login.jpg
     - images/product-placeholder.png
 
@@ -86,12 +84,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
+          weight: 200
+        - asset: fonts/Poppins-SemiBold.ttf
+          weight: 300
+        - asset: fonts/Poppins-Bold.ttf
+          weight: 400
+    - family: Comfortaa
+      fonts:
+        - asset: fonts/Comfortaa-Regular.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

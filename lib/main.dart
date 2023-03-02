@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
           title: 'ShoppingCart',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
+            fontFamily: 'Poppins',
             appBarTheme: const AppBarTheme(
               color: Colors.teal,
               titleTextStyle: TextStyle(

@@ -26,6 +26,7 @@ class AppDrawer extends StatelessWidget {
             height: height * 0.1,
           ),
           const Shader(
+            type: 0,
             child: Icon(
               Icons.shopping_cart_outlined,
               size: 70,
@@ -36,40 +37,44 @@ class AppDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Shader(
+                type: 0,
                 child: Icon(
-              Icons.home,
-              color: Colors.white,
-            )),
+                  Icons.home,
+                  color: Colors.white,
+                )),
             title: const Text('Home'),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(ProductOverview.routeName),
           ),
           ListTile(
             leading: const Shader(
+                type: 0,
                 child: Icon(
-              Icons.shopping_bag,
-              color: Colors.white,
-            )),
+                  Icons.shopping_bag,
+                  color: Colors.white,
+                )),
             title: const Text('Orders'),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(OrderScreen.routeName),
           ),
           ListTile(
             leading: const Shader(
+                type: 0,
                 child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            )),
+                  Icons.edit,
+                  color: Colors.white,
+                )),
             title: const Text('Manage Products'),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(ManageProducts.routeName),
           ),
           ListTile(
             leading: const Shader(
+                type: 0,
                 child: Icon(
-              Icons.key_rounded,
-              color: Colors.white,
-            )),
+                  Icons.key_rounded,
+                  color: Colors.white,
+                )),
             title: const Text('Logout'),
             onTap: () {
               Navigator.of(context).pop();

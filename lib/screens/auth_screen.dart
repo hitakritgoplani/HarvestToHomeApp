@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:harvesttohome/models/KeyboardVisibilityBuilder.dart';
+import 'package:harvesttohome/shaders/icon_shader.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
@@ -59,47 +62,55 @@ class _AuthScreenState extends State<AuthScreen>
           color: Colors.white,
           child: Stack(
             children: [
-              Stack(
-                children: [
-                  CustomPaint(
-                    painter: CurvePainter(height: height, width: width),
-                  ),
-
-                ],
+              CustomPaint(
+                painter: CurvePainter(height: height, width: width),
               ),
-              SizedBox(
-                height: height * 0.3,
-                width: width * 5,
-                child: const Image(
-                  image: AssetImage('images/logo.png'),
-                  alignment:Alignment.center,
-                  width: 329,
-                  height: 88,
-                  // fit: BoxFit.cover,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 100, left: 20),
+                  child: Shader(
+                    type: 1,
+                    child: AnimatedTextKit(
+                      totalRepeatCount: 1,
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          'HARVEST2HOME',
+                          speed: const Duration(milliseconds: 100),
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Comfortaa',
+                            fontSize: 35,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+              ),
+              KeyboardVisibilityBuilder(
+                child: SizedBox(
+                  height: height,
+                  width: width,
+                ),
+                builder: (ctx, child, isVisible){
+                  if(isVisible){
+                    return BackdropFilter(
+                      filter: ui.ImageFilter.blur(
+                        sigmaY: 8.0,
+                        sigmaX: 8.0,
+                      ),
+                      child: child,
+                    );
+                  } else {
+                    return child;
+                  }
+                },
               ),
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: LoginWidget(),
-                //For containers we can directly use AnimatedContainer. No need
-                // of setting up controller or animation.It automatically
-                // detects change in any value like height, width, padding, etc.
-                // child: AnimatedBuilder(
-                //   animation: _animation,
-                //   builder: (ctx, child) => Container(
-                //     decoration: const BoxDecoration(
-                //       borderRadius: BorderRadius.only(
-                //         topLeft: Radius.circular(30),
-                //         topRight: Radius.circular(30),
-                //       ),
-                //       color: Colors.deepPurple,
-                //     ),
-                //     height: height * _animation.value.toDouble(),
-                //     width: width,
-                //     child: child,
-                //   ),
-                //   child: const LoginWidget(),
-                // ),
               ),
             ],
           ),
@@ -152,7 +163,9 @@ class _LoginWidgetState extends State<LoginWidget>
       focusedBorder: drawBorder(const Color.fromRGBO(36, 94, 52, 1)),
       errorBorder: drawBorder(Colors.red),
       focusedErrorBorder: drawBorder(Colors.red),
-      prefixIcon: text == 'Password' ? const Icon(Icons.lock) : const Icon(Icons.person),
+      prefixIcon: text == 'Password'
+          ? const Icon(Icons.lock)
+          : const Icon(Icons.person),
     );
   }
 
@@ -239,24 +252,49 @@ class _LoginWidgetState extends State<LoginWidget>
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            SizedBox(height: height * 0.01),
-            Text(
-              _authMode==AuthMode.login?"Welcome Back":"Create your account",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  fontSize: 24,
-                    color:Colors.black,
-                  fontWeight:FontWeight.bold,
-                )
+            KeyboardVisibilityBuilder(
+              builder: (ctx, child, isVisible){
+                if (!isVisible){
+                  return child;
+                } else {
+                  return const SizedBox();
+                }
+              },
+              child: CircleAvatar(
+                backgroundColor: const Color.fromRGBO(232, 236, 242, 1),
+                radius: MediaQuery.of(context).viewInsets.vertical > 0 ? 0 : width * 0.15,
+                child: const Shader(
+                  type: 0,
+                  child: Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 80,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: height * 0.02),
+            SizedBox(
+                height: height * (_authMode == AuthMode.login ? 0.08 : 0.025)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _authMode == AuthMode.login
+                    ? "Welcome Back"
+                    : "Create your account",
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            SizedBox(height: height * 0.04),
             TextFormField(
               style: const TextStyle(
                 color: Colors.black,
@@ -316,33 +354,38 @@ class _LoginWidgetState extends State<LoginWidget>
                   },
                 ),
               ),
-            SizedBox(height: height * 0.01),
-            ElevatedButton(
-              onPressed: () async {
-                FocusScope.of(context).unfocus();
-                await submit();
-              },
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size?>(
-                  Size(width, height * 0.06),
-                ),
-                shape: MaterialStateProperty.all(
-                  const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
+            SizedBox(height: height * 0.02),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Shader(
+                  type: 0,
+                  child: Container(
+                    width: width,
+                    height: height * 0.07,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                   ),
                 ),
-                backgroundColor:
-                    MaterialStateProperty.all<Color?>(Colors.green),
-              ),
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : Text(
-                      _authMode == AuthMode.login ? 'Login' : 'Sign In',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+                TextButton(
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    await submit();
+                  },
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          _authMode == AuthMode.login ? 'SIGN IN' : 'REGISTER',
+                          style: const TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                ),
+              ],
             ),
             SizedBox(height: height * 0.02),
             TextButton(
@@ -379,7 +422,6 @@ class _LoginWidgetState extends State<LoginWidget>
 }
 
 class CurvePainter extends CustomPainter {
-
   final double height;
   final double width;
 
@@ -389,20 +431,16 @@ class CurvePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
     paint.style = PaintingStyle.fill;
-    paint.shader = ui.Gradient.linear(
-      const Offset(0, 0),
-      Offset(width, 0),
-      <Color>[
-        const Color.fromRGBO(116, 212, 126, 1),
-        const Color.fromRGBO(65, 161, 71, 1),
-        const Color.fromRGBO(27, 123, 31, 1),
-      ],
-      [
-        0.0,
-        0.7,
-        1,
-      ]
-    );
+    paint.shader =
+        ui.Gradient.linear(const Offset(0, 0), Offset(width, 0), <Color>[
+      const Color.fromRGBO(116, 212, 126, 1),
+      const Color.fromRGBO(65, 161, 71, 1),
+      const Color.fromRGBO(27, 123, 31, 1),
+    ], [
+      0.0,
+      0.7,
+      1,
+    ]);
 
     var path = Path();
 
@@ -412,8 +450,7 @@ class CurvePainter extends CustomPainter {
     path.lineTo(0, 0);
 
     path.moveTo(width / 2, height * 0.25);
-    path.quadraticBezierTo(
-        width, height / 4, width, height * 0.16);
+    path.quadraticBezierTo(width, height / 4, width, height * 0.16);
     path.lineTo(width, 0);
     path.lineTo(0, 0);
 
@@ -433,7 +470,6 @@ class CurvePainter extends CustomPainter {
     tracerPath.quadraticBezierTo(width, height / 4, width, 0);
 
     canvas.drawPath(tracerPath, tracerPaint);
-
   }
 
   @override
