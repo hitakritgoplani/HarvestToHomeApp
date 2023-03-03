@@ -29,6 +29,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
     title: '',
     description: '',
     price: 0.0,
+    farmerId: '',
     imageUrl: '',
   );
 
@@ -55,6 +56,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl,
+          farmerId: product.farmerId,
           isFavorite: product.isFavorite,
         );
         _imageController.text = product.imageUrl;
@@ -144,8 +146,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
       _isLoading = false;
     });
     if (!mounted) return;
-    Navigator.of(context)
-        .popUntil(ModalRoute.withName(ManageProducts.routeName));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -241,6 +242,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
                           description: _newProduct.description,
                           price: _newProduct.price,
                           imageUrl: _newProduct.imageUrl,
+                          farmerId: _newProduct.farmerId,
                           isFavorite: _newProduct.isFavorite,
                         );
                       },
@@ -269,6 +271,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
                           description: _newProduct.description,
                           price: double.parse(value.toString()),
                           imageUrl: _newProduct.imageUrl,
+                          farmerId: _newProduct.farmerId,
                           isFavorite: _newProduct.isFavorite,
                         );
                       },
@@ -294,6 +297,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
                           description: value.toString(),
                           price: _newProduct.price,
                           imageUrl: _newProduct.imageUrl,
+                          farmerId: _newProduct.farmerId,
                           isFavorite: _newProduct.isFavorite,
                         );
                       },
@@ -321,6 +325,7 @@ class _EditAddScreenState extends State<EditAddScreen> {
                           description: _newProduct.description,
                           price: _newProduct.price,
                           imageUrl: value.toString(),
+                          farmerId: _newProduct.farmerId,
                           isFavorite: _newProduct.isFavorite,
                         );
                       },

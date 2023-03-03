@@ -63,13 +63,13 @@ class _OrderDesignState extends State<OrderDesign>
               Text(
                 DateFormat('dd MMM, yy  hh:mm a').format(widget.dateTime),
                 style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    const TextStyle(fontSize: 20),
               ),
               const SizedBox(width: 20),
               Text(
                 'Total: \u20b9${widget.total}',
                 style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    const TextStyle(fontSize: 20),
               ),
               IconButton(
                 onPressed: () {

@@ -6,8 +6,9 @@ import '../providers/cart.dart';
 class CartDesign extends StatelessWidget {
   final String productKey;
   final String title;
-  final String imageUrl;
   final double price;
+  final String farmerId;
+  final String imageUrl;
   final int quantity;
 
   const CartDesign({
@@ -16,6 +17,7 @@ class CartDesign extends StatelessWidget {
     required this.title,
     required this.price,
     required this.quantity,
+    required this.farmerId,
     required this.imageUrl,
   }) : super(key: key);
 
@@ -102,7 +104,12 @@ class CartDesign extends StatelessWidget {
                       Text(quantity.toString()),
                       IconButton(
                           onPressed: () => cartData.addToCart(
-                              productKey, title, imageUrl, price),
+                            productKey,
+                            title,
+                            price,
+                            farmerId,
+                            imageUrl,
+                          ),
                           icon: const Icon(Icons.add)),
                     ],
                   )

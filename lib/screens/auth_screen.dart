@@ -295,7 +295,7 @@ class _LoginWidgetState extends State<LoginWidget>
                 textAlign: TextAlign.start,
                 style: const TextStyle(
                   fontSize: 30,
-                  color: Colors.black,
+                  color: Color.fromRGBO(48, 55, 51, 1),
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -303,7 +303,7 @@ class _LoginWidgetState extends State<LoginWidget>
             SizedBox(height: height * 0.04),
             TextFormField(
               style: const TextStyle(
-                color: Colors.black,
+                color: Color.fromRGBO(48, 55, 51, 1),
               ),
               controller: _usernameController,
               cursorColor: const Color.fromRGBO(36, 94, 52, 1),
@@ -322,7 +322,7 @@ class _LoginWidgetState extends State<LoginWidget>
             SizedBox(height: height * 0.02),
             TextFormField(
               style: const TextStyle(
-                color: Colors.black,
+                color: Color.fromRGBO(48, 55, 51, 1),
               ),
               controller: _passwordController,
               cursorColor: const Color.fromRGBO(36, 94, 52, 1),
@@ -346,7 +346,7 @@ class _LoginWidgetState extends State<LoginWidget>
                 child: TextFormField(
                   enabled: _authMode == AuthMode.signIn,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Color.fromRGBO(48, 55, 51, 1),
                   ),
                   cursorColor: const Color.fromRGBO(36, 94, 52, 1),
                   obscureText: true,
@@ -392,6 +392,9 @@ class _LoginWidgetState extends State<LoginWidget>
                     FocusScope.of(context).unfocus();
                     await submit(_isFarmer);
                   },
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(Size(width, height * 0.07)),
+                  ),
                   child: _isLoading
                       ? const CircularProgressIndicator()
                       : Text(
@@ -429,7 +432,8 @@ class _LoginWidgetState extends State<LoginWidget>
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                    color: Color.fromRGBO(48, 55, 51, 1),
+                ),
               ),
             ),
           ],

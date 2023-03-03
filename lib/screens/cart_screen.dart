@@ -62,6 +62,9 @@ class _CartScreenState extends State<CartScreen> {
                                 price: cartData.cartItems.values
                                     .toList()[index]
                                     .price,
+                                farmerId: cartData.cartItems.values
+                                    .toList()[index]
+                                    .farmerId,
                                 quantity: cartData.cartItems.values
                                     .toList()[index]
                                     .quantity,

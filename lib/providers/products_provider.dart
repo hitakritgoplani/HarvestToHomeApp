@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'product.dart';
 
@@ -30,17 +31,21 @@ class ProductProvider with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
+  String get userId {
+    return _userID;
+  }
+
   void notifyFrom() {
     notifyListeners();
   }
 
   Future<void> fetchProducts([bool loadEditable = true]) async {
-    final editableUrl = '&orderBy="creatorID"&equalTo="$_userID"';
+    final editableUrl = '&orderBy="farmerId"&equalTo="$_userID"';
     final getAllUrl =
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product.json?auth=$_token';
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$_token';
     final url = Uri.parse(getAllUrl + (loadEditable ? editableUrl : ''));
     final favUrl = Uri.parse(
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/UserFavorites/$_userID.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$_userID.json?auth=$_token');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -56,6 +61,7 @@ class ProductProvider with ChangeNotifier {
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
+            farmerId: prodData['farmerId'],
             imageUrl: prodData['imageUrl'],
             isFavorite: favData[prodID] ?? false,
           ),
@@ -70,7 +76,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$_token');
     try {
       await http.post(
         url,
@@ -79,8 +85,8 @@ class ProductProvider with ChangeNotifier {
             'title': product.title,
             'description': product.description,
             'price': product.price,
+            'farmerId': _userID,
             'imageUrl': product.imageUrl,
-            'creatorID': _userID,
           },
         ),
       );
@@ -92,7 +98,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> updateProduct(Product product) async {
     final url = Uri.parse(
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product/${product.id}.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/products/${product.id}.json?auth=$_token');
     final index = _items.indexWhere((element) => element.id == product.id);
     try {
       await http.patch(
@@ -101,6 +107,7 @@ class ProductProvider with ChangeNotifier {
           'title': product.title,
           'description': product.description,
           'price': product.price,
+          'farmerId': product.farmerId,
           'imageUrl': product.imageUrl,
         }),
       );
@@ -114,7 +121,7 @@ class ProductProvider with ChangeNotifier {
   //Optimistic Updating
   Future<void> removeItem(String id) async {
     final url = Uri.parse(
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/product/$id.json?auth=$_token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$_token');
     final index = _items.indexWhere((element) => element.id == id);
     Product? deletedItem = _items[index];
     _items.removeWhere((element) => element.id == id);
@@ -126,5 +133,19 @@ class ProductProvider with ChangeNotifier {
       throw HttpException("Item couldn't be deleted!");
     }
     deletedItem = null;
+  }
+
+  Future<String?> getRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return null;
+    }
+    final extractedData =
+    json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
+    final expiryDate = DateTime.parse(extractedData['expiryDate'] as String);
+    if (expiryDate.isBefore(DateTime.now())) {
+      return null;
+    }
+    return (extractedData['role'] as String);
   }
 }

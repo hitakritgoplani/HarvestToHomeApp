@@ -57,11 +57,13 @@ class Auth with ChangeNotifier {
     _expiryDate = DateTime.now()
         .add(Duration(seconds: int.parse(extractedData['expiresIn'])));
     autoLogout();
+    String role = isFarmer ? 'Farmer' : 'Customer';
     final prefs = await SharedPreferences.getInstance();
     final userData = json.encode({
       'token' : _token,
       'userID' : _userID,
       'expiryDate' : _expiryDate?.toIso8601String(),
+      'role' : role,
     });
     prefs.setString('userData', userData);
 

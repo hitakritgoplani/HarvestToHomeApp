@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harvesttohome/screens/farmer_profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/auth_screen.dart';
@@ -22,16 +23,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Always use this for main file and .value for lists, grids ...
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Auth>(create: (ctx) => Auth()),
         ChangeNotifierProxyProvider<Auth, ProductProvider>(
-            create: (ctx) => ProductProvider('', '', []),
-            update: (ctx, auth, prevProducts) => ProductProvider(
-                auth.token ?? '',
-                auth.userID ?? '',
-                prevProducts?.getItems ?? [])),
+          create: (ctx) => ProductProvider('', '', []),
+          update: (ctx, auth, prevProducts) => ProductProvider(
+            auth.token ?? '',
+            auth.userID ?? '',
+            prevProducts?.getItems ?? [],
+          ),
+        ),
         ChangeNotifierProvider(create: (ctx) => Cart()),
         ChangeNotifierProxyProvider<Auth, Orders>(
           create: (ctx) => Orders('', '', []),
@@ -48,6 +50,12 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Poppins',
             primaryColor: const Color.fromRGBO(48, 55, 51, 1),
             appBarTheme: const AppBarTheme(
+              iconTheme: IconThemeData(
+                color: Color.fromRGBO(36, 94, 52, 1),
+              ),
+              actionsIconTheme: IconThemeData(
+                color: Color.fromRGBO(36, 94, 52, 1),
+              ),
               color: Colors.white,
               elevation: 0,
               titleTextStyle: TextStyle(
@@ -86,6 +94,7 @@ class MyApp extends StatelessWidget {
             OrderScreen.routeName: (ctx) => const OrderScreen(),
             ManageProducts.routeName: (ctx) => const ManageProducts(),
             EditAddScreen.routeName: (ctx) => const EditAddScreen(),
+            FarmerScreen.routeName: (ctx) => const FarmerScreen(),
           },
         ),
       ),

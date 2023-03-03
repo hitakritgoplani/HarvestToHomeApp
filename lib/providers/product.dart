@@ -8,6 +8,7 @@ class Product with ChangeNotifier {
   final String description;
   final double price;
   final String imageUrl;
+  final String farmerId;
   bool isFavorite;
 
   Product({
@@ -16,12 +17,13 @@ class Product with ChangeNotifier {
     required this.description,
     required this.price,
     required this.imageUrl,
+    required this.farmerId,
     this.isFavorite = false,
   });
 
   Future<void> toggleFavorite(String token, String userID) async {
     final url = Uri.parse(
-        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/UserFavorites/$userID/$id.json?auth=$token');
+        'https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userID/$id.json?auth=$token');
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();

@@ -21,6 +21,7 @@ class ProductDesc extends StatelessWidget {
     final title = productData.findByID(productID).title;
     final imageUrl = productData.findByID(productID).imageUrl;
     final price = productData.findByID(productID).price;
+    final farmerId = productData.findByID(productID).farmerId;
 
     return Scaffold(
       // appBar: AppBar(
@@ -40,7 +41,7 @@ class ProductDesc extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () =>
-                    cartData.addToCart(productID, title, imageUrl, price),
+                    cartData.addToCart(productID, title, price, farmerId, imageUrl),
                 icon: const Icon(Icons.add_shopping_cart),
               ),
             ],

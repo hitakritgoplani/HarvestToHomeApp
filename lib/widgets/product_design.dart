@@ -88,8 +88,9 @@ class ProductDesign extends StatelessWidget {
                               cartData.addToCart(
                                 product.id,
                                 product.title,
-                                product.imageUrl,
                                 product.price,
+                                product.farmerId,
+                                product.imageUrl,
                               );
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(

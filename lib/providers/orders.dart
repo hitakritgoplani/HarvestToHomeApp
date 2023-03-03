@@ -40,17 +40,18 @@ class Orders with ChangeNotifier {
         return CartItem(
           id: e['id'],
           title: e['title'],
-          imageUrl: e['imageUrl'],
           price: e['price'],
+          farmerId: e['farmerId'],
+          imageUrl: e['imageUrl'],
           quantity: e['quantity'],
         );
       }).toList();
       loadedItems.add(
         OrderItem(
           id: orderID,
-          total: orderData['total'],
-          products: products,
           dateTime: DateTime.parse(orderData['dateTime']),
+          products: products,
+          total: orderData['total'],
         ),
       );
     });
@@ -67,17 +68,18 @@ class Orders with ChangeNotifier {
           url,
           body: json.encode(
             {
-              'total': total,
               'products': cartItems
                   .map((cp) => {
                         'id': cp.id,
                         'title': cp.title,
-                        'imageUrl': cp.imageUrl,
                         'price': cp.price,
+                        'farmerId': cp.farmerId,
+                        'imageUrl': cp.imageUrl,
                         'quantity': cp.quantity,
                       })
                   .toList(),
               'dateTime': DateTime.now().toIso8601String(),
+              'total': total,
             },
           ),
         );
@@ -86,5 +88,17 @@ class Orders with ChangeNotifier {
       }
     }
     await fetchOrderItems();
+  }
+
+  Future<void> fetchOrderItemsForParticularFarmer(String farmerId) async {
+    final url =
+    Uri.parse('https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?auth=$token&orderBy="farmerId"&equalTo="$userID"');
+    try{
+      var data = await http.get(url);
+      debugPrint(data.body);
+    } catch (error) {
+      rethrow;
+    }
+
   }
 }
