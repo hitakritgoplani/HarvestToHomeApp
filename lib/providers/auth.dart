@@ -34,7 +34,7 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> authenticate(String email, String password, String method) async {
+  Future<void> authenticate(String email, String password, String method, bool isFarmer) async {
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:$method?key=$apiKey');
     final response = await http.post(
@@ -57,7 +57,6 @@ class Auth with ChangeNotifier {
     _expiryDate = DateTime.now()
         .add(Duration(seconds: int.parse(extractedData['expiresIn'])));
     autoLogout();
-    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     final userData = json.encode({
       'token' : _token,
@@ -65,14 +64,70 @@ class Auth with ChangeNotifier {
       'expiryDate' : _expiryDate?.toIso8601String(),
     });
     prefs.setString('userData', userData);
+
+    if (method=='signUp' && !isFarmer){
+      final url = Uri.parse("https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/users/customers/$_userID.json?auth=$_token");
+      try{
+        await http.put(
+          url,
+          body: json.encode(
+            {
+              'status': 'Active'
+            }
+          )
+        );
+      } catch (error){
+        rethrow;
+      }
+    }
+    else if (method=='signUp' && isFarmer){
+      final url = Uri.parse("https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/users/farmers/$_userID.json?auth=$_token");
+      try{
+        await http.put(
+            url,
+            body: json.encode(
+                {
+                  'status': 'Active'
+                }
+            )
+        );
+      } catch (error){
+        rethrow;
+      }
+    }
+    else if (method=='signInWithPassword' && !isFarmer){
+      final url = Uri.parse("https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/users/customers/$_userID.json?auth=$_token");
+      try{
+        var data = await http.get(url);
+        if (data.body == 'null'){
+          await logout();
+          throw HttpException("Not registered as a user");
+        }
+      } catch (error){
+        rethrow;
+      }
+    }
+    else if (method=='signInWithPassword' && isFarmer){
+      final url = Uri.parse("https://harvest2home-bfcd6-default-rtdb.asia-southeast1.firebasedatabase.app/users/farmers/$_userID.json?auth=$_token");
+      try{
+        var data = await http.get(url);
+        if (data.body == 'null'){
+          await logout();
+          throw HttpException("Not registered as a farmer");
+        }
+      } catch (error){
+        rethrow;
+      }
+    }
+    notifyListeners();
   }
 
-  Future<void> signUp(String email, String password) async {
-    return authenticate(email, password, 'signUp');
+  Future<void> signUp(String email, String password, bool isFarmer) async {
+    return authenticate(email, password, 'signUp', isFarmer);
   }
 
-  Future<void> signIn(String email, String password) async {
-    return authenticate(email, password, 'signInWithPassword');
+  Future<void> signIn(String email, String password, bool isFarmer) async {
+    return authenticate(email, password, 'signInWithPassword', isFarmer);
   }
 
   Future<bool> tryAutoLogin() async{

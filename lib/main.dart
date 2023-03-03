@@ -46,13 +46,15 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             fontFamily: 'Poppins',
+            primaryColor: const Color.fromRGBO(48, 55, 51, 1),
             appBarTheme: const AppBarTheme(
-              color: Colors.teal,
+              color: Colors.white,
+              elevation: 0,
               titleTextStyle: TextStyle(
                 fontSize: 30,
-                //fontFamily: 'Cag',
                 fontWeight: FontWeight.bold,
-                //color: Colors.white,
+                fontFamily: 'Comfortaa',
+                color: Color.fromRGBO(48, 55, 51, 1),
               ),
             ),
             textTheme: const TextTheme(

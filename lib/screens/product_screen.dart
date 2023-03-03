@@ -72,11 +72,18 @@ class _ProductOverviewState extends State<ProductOverview> {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(
+          color: Color.fromRGBO(48, 55, 51, 1),
+        ),
         title: Row(
           children: [
             GestureDetector(
               onTap: () => showItems(PopupListOptions.all),
-              child: const Text('MyCart'),
+              child: const Text(
+                  'H2H',
+              ),
             ),
             const Spacer(),
             Consumer<Cart>(
@@ -84,10 +91,16 @@ class _ProductOverviewState extends State<ProductOverview> {
                 onTap: goToCart,
                 child: const Icon(
                   Icons.shopping_cart,
+                  color: Color.fromRGBO(48, 55, 51, 1),
                   size: 30,
                 ),
               ),
-              builder: (_, cartData, child) => SizedBox()
+              builder: (_, cartData, child) => Badge(
+                badgeContent:
+                FittedBox(child: Text(cartData.totalItems.toString())),
+                badgeAnimation: const BadgeAnimation.scale(),
+                child: child,
+              ),
             ),
             SizedBox(
               width: width * 0.05,
@@ -97,10 +110,15 @@ class _ProductOverviewState extends State<ProductOverview> {
                 onTap: () => showItems(PopupListOptions.favourites),
                 child: const Icon(
                   Icons.favorite_border,
+                  color: Color.fromRGBO(48, 55, 51, 1),
                   size: 30,
                 ),
               ),
-              builder: (_, prod, child) => SizedBox()
+              builder: (_, prod, child) => Badge(
+                badgeAnimation: const BadgeAnimation.scale(),
+                badgeContent: Text(prod.totalFav.toString()),
+                child: child,
+              ),
             ),
           ],
         ),
@@ -129,8 +147,8 @@ class _ProductOverviewState extends State<ProductOverview> {
       ),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
-            )
+        child: CircularProgressIndicator(),
+      )
           : MainProductList(filter: filter),
     );
   }

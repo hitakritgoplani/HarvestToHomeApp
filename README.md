@@ -1,16 +1,3 @@
-# harvesttohome
+## Harvest2Home
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Truck system for delivery for vegetables/fruits farmers to customers. Uber and Ola like truck/vehicle systems for fast delivery from farmers to customers. Several farmers can share one truck. It will eliminate third party intervention in distribution of vegetables and fruits.

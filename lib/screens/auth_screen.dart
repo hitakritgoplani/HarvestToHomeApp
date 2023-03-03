@@ -94,8 +94,8 @@ class _AuthScreenState extends State<AuthScreen>
                   height: height,
                   width: width,
                 ),
-                builder: (ctx, child, isVisible){
-                  if(isVisible){
+                builder: (ctx, child, isVisible) {
+                  if (isVisible) {
                     return BackdropFilter(
                       filter: ui.ImageFilter.blur(
                         sigmaY: 8.0,
@@ -143,6 +143,7 @@ class _LoginWidgetState extends State<LoginWidget>
   };
 
   bool _isLoading = false;
+  bool _isFarmer = false;
 
   OutlineInputBorder drawBorder(Color color) {
     return OutlineInputBorder(
@@ -169,7 +170,7 @@ class _LoginWidgetState extends State<LoginWidget>
     );
   }
 
-  Future<void> submit() async {
+  Future<void> submit(bool isFarmer) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -182,6 +183,7 @@ class _LoginWidgetState extends State<LoginWidget>
           .signIn(
             _authData['username']!,
             _authData['password']!,
+            _isFarmer,
           )
           .then(
             (value) => ScaffoldMessenger.of(context).showSnackBar(
@@ -204,6 +206,7 @@ class _LoginWidgetState extends State<LoginWidget>
           .signUp(
             _authData['username']!,
             _authData['password']!,
+            _isFarmer,
           )
           .then(
             (value) => ScaffoldMessenger.of(context).showSnackBar(
@@ -252,6 +255,7 @@ class _LoginWidgetState extends State<LoginWidget>
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -259,27 +263,29 @@ class _LoginWidgetState extends State<LoginWidget>
         child: Column(
           children: [
             KeyboardVisibilityBuilder(
-              builder: (ctx, child, isVisible){
-                if (!isVisible){
+              builder: (ctx, child, isVisible) {
+                if (!isVisible) {
                   return child;
                 } else {
                   return const SizedBox();
                 }
               },
               child: CircleAvatar(
-                backgroundColor: const Color.fromRGBO(232, 236, 242, 1),
-                radius: MediaQuery.of(context).viewInsets.vertical > 0 ? 0 : width * 0.15,
-                child: const Shader(
+                backgroundColor: _authMode == AuthMode.login
+                    ? const Color.fromRGBO(232, 236, 242, 1)
+                    : Colors.transparent,
+                radius: width * 0.12,
+                child: Shader(
                   type: 0,
                   child: Icon(
                     Icons.shopping_cart_outlined,
-                    size: 80,
+                    size: 50 * (_authMode == AuthMode.login ? 1 : 0),
                   ),
                 ),
               ),
             ),
             SizedBox(
-                height: height * (_authMode == AuthMode.login ? 0.08 : 0.025)),
+                height: height * (_authMode == AuthMode.login ? 0.0 : 0.01)),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -300,7 +306,7 @@ class _LoginWidgetState extends State<LoginWidget>
                 color: Colors.black,
               ),
               controller: _usernameController,
-              cursorColor: Colors.black,
+              cursorColor: const Color.fromRGBO(36, 94, 52, 1),
               decoration: inputDecoration('Username / Email'),
               textInputAction: TextInputAction.next,
               validator: (value) {
@@ -319,7 +325,7 @@ class _LoginWidgetState extends State<LoginWidget>
                 color: Colors.black,
               ),
               controller: _passwordController,
-              cursorColor: Colors.white,
+              cursorColor: const Color.fromRGBO(36, 94, 52, 1),
               obscureText: true,
               decoration: inputDecoration('Password'),
               textInputAction: TextInputAction.next,
@@ -342,7 +348,7 @@ class _LoginWidgetState extends State<LoginWidget>
                   style: const TextStyle(
                     color: Colors.white,
                   ),
-                  cursorColor: Colors.white,
+                  cursorColor: const Color.fromRGBO(36, 94, 52, 1),
                   obscureText: true,
                   decoration: inputDecoration('Confirm Password'),
                   textInputAction: TextInputAction.next,
@@ -354,6 +360,18 @@ class _LoginWidgetState extends State<LoginWidget>
                   },
                 ),
               ),
+            CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              value: _isFarmer,
+              onChanged: (bool? val) {
+                setState(() {
+                  _isFarmer = val!;
+                });
+              },
+              title: Text(
+                "${_authMode == AuthMode.login ? 'Sign In' : 'Register'} as a farmer",
+              ),
+            ),
             SizedBox(height: height * 0.02),
             Stack(
               alignment: Alignment.center,
@@ -372,7 +390,7 @@ class _LoginWidgetState extends State<LoginWidget>
                 TextButton(
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
-                    await submit();
+                    await submit(_isFarmer);
                   },
                   child: _isLoading
                       ? const CircularProgressIndicator()
